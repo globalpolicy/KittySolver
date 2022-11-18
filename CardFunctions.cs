@@ -33,49 +33,7 @@ namespace Kitty
             string[] cardTokens = cardsString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < cardTokens.Length; i++)
             {
-                string cardToken = cardTokens[i].ToUpper();
-                string suit = cardToken.Substring(cardToken.Length - 1, 1);
-                string value = cardToken.Replace(suit, "");
-
-
-                int valueInt, suitInt;
-                switch (value)
-                {
-                    case "A":
-                        valueInt = 14;
-                        break;
-                    case "J":
-                        valueInt = 11;
-                        break;
-                    case "Q":
-                        valueInt = 12;
-                        break;
-                    case "K":
-                        valueInt = 13;
-                        break;
-                    default:
-                        valueInt = int.Parse(value);
-                        break;
-                }
-                switch (suit)
-                {
-                    case "S":
-                        suitInt = 1;
-                        break;
-                    case "H":
-                        suitInt = 2;
-                        break;
-                    case "D":
-                        suitInt = 3;
-                        break;
-                    case "C":
-                        suitInt = 4;
-                        break;
-                    default:
-                        suitInt = 0;
-                        break;
-                }
-                listOfCards.Add(new Card(valueInt, suitInt));
+                listOfCards.Add(new Card(cardTokens[i]));
             }
             return listOfCards;
         }

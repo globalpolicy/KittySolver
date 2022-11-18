@@ -19,8 +19,58 @@ namespace Kitty
             this.Suit = suit;
         }
 
+        public Card(string cardString)
+        {
+            string cardToken = cardString.ToUpper();
+            string suit = cardToken.Substring(cardToken.Length - 1, 1);
+            string value = cardToken.Replace(suit, "");
+
+            int valueInt, suitInt;
+            switch (value)
+            {
+                case "A":
+                    valueInt = 14;
+                    break;
+                case "J":
+                    valueInt = 11;
+                    break;
+                case "Q":
+                    valueInt = 12;
+                    break;
+                case "K":
+                    valueInt = 13;
+                    break;
+                default:
+                    valueInt = int.Parse(value);
+                    break;
+            }
+            switch (suit)
+            {
+                case "S":
+                    suitInt = 1;
+                    break;
+                case "H":
+                    suitInt = 2;
+                    break;
+                case "D":
+                    suitInt = 3;
+                    break;
+                case "C":
+                    suitInt = 4;
+                    break;
+                default:
+                    suitInt = 0;
+                    break;
+            }
+
+            this.Value = valueInt;
+            this.Suit = suitInt;
+        }
+
         public bool Equals(Card other)
         {
+            if (Object.ReferenceEquals(other, null))
+                return false;
             return this.Suit == other.Suit && this.Value == other.Value;
         }
 
@@ -61,6 +111,27 @@ namespace Kitty
                     break;
             }
             return valuePart + suitPart;
+        }
+
+        public static implicit operator Card(string cardString)
+        {
+            return new Card(cardString);
+        }
+
+
+
+        public static bool operator ==(Card card1, Card card2)
+        {
+            if (Object.ReferenceEquals(card1, null) || Object.ReferenceEquals(card2, null))
+                return false;
+            return card1.Equals(card2);
+        }
+
+        public static bool operator !=(Card card1, Card card2)
+        {
+            if (Object.ReferenceEquals(card1, null) || Object.ReferenceEquals(card2, null))
+                return true;
+            return !card1.Equals(card2);
         }
     }
 

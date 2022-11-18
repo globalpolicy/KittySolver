@@ -89,7 +89,7 @@ namespace Kitty
                 IsValidAceRun(thrupleCards))
             {
                 //RUN sequence
-                runScore = thrupleCards.Item1.Value + thrupleCards.Item2.Value + thrupleCards.Item3.Value; //score = sum of all cards' values
+                runScore = CalculateRunScore(thrupleCards);
             }
             if (thrupleCards.Item1.Value == thrupleCards.Item2.Value && thrupleCards.Item3.Value != thrupleCards.Item2.Value)
             {
@@ -115,9 +115,28 @@ namespace Kitty
         /// <returns></returns>
         private static bool IsValidAceRun(Tuple<Card, Card, Card> thrupleCards)
         {
-            bool isFirstKind = thrupleCards.Item1.Value == 100 && thrupleCards.Item2.Value == 3 && thrupleCards.Item3.Value == 2; //A,3,2
-            bool isSecondKind = thrupleCards.Item1.Value == 100 && thrupleCards.Item2.Value == 13 && thrupleCards.Item3.Value == 12; //A,K,Q
+            bool isFirstKind = thrupleCards.Item1.Value == 14 && thrupleCards.Item2.Value == 3 && thrupleCards.Item3.Value == 2; //A,3,2
+            bool isSecondKind = thrupleCards.Item1.Value == 14 && thrupleCards.Item2.Value == 13 && thrupleCards.Item3.Value == 12; //A,K,Q
             return isFirstKind || isSecondKind;
+        }
+
+
+        /// <summary>
+        /// A23 doesn't play well with the simple summation approach for score calculation. According to this rule, max run = QKA = 39 and the next highest = JQK = 36, but 
+        /// A23 = 19. We need simply manually assign a value between 36 and 39 for an A23 run. Other runs will work just fine.
+        /// </summary>
+        /// <param name="thrupleCards">Sequence of 3 cards in descending order</param>
+        /// <returns>The correct score for the run sequence provided</returns>
+        private static double CalculateRunScore(Tuple<Card, Card, Card> thrupleCards)
+        {
+            double score;
+
+            if (thrupleCards.Item1.Value == 14 && thrupleCards.Item2.Value == 3 && thrupleCards.Item3.Value == 2) //if the thruple is an A-2-3 run
+                score = 38;
+            else
+                score = thrupleCards.Item1.Value + thrupleCards.Item2.Value + thrupleCards.Item3.Value; //score = sum of all cards' values
+
+            return score;
         }
         #endregion
 
